@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}PR Preview - {{ story.title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1><i class="fab fa-github"></i> Pull Request Preview</h1>
+            <p class="text-muted">Review generated content before creating GitHub PR</p>
+        </div>
+        <div>
+            <a href="{{ url_for('story_detail', story_id=story.id) }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Story
+            </a>
+        </div>
+    </div>
+
+    <!-- Story Info -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="fas fa-info-circle"></i> Story Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h6>{{ story.title }}</h6>
+                    <p class="text-muted">{{ story.description[:200] }}{% if story.description|length > 200 %}...{% endif %}</p>
+                </div>
+                <div class="col-md-4">
+                    {% if story.github_repo %}
+                    <strong>Target Repository:</strong><br>
+                    <a href="https://github.com/{{ story.github_repo }}" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i> {{ story.github_repo }}
+                    </a>
+                    <br><small class="text-muted">Branch: develop</small>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> No GitHub repository linked
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generated Tasks Summary -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="fas fa-tasks"></i> Generated Tasks ({{ tasks|length }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for task in tasks %}
+                <div class="col-md-6 mb-3">
+                    <div class="border rounded p-3">
+                        <h6 class="mb-2">
+                            {{ task.title }}
+                            {% if task.etl_generated %}
+                            <span class="badge bg-primary badge-sm">
+                                <i class="fas fa-robot"></i> Auto-generated
+                            </span>
+                            {% endif %}
+                        </h6>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge bg-info">{{ task.task_type.replace('_', ' ').title() }}</span>
+                            <span class="badge priority-{{ task.priority.lower() }}">{{ task.priority }}</span>
+                            <span class="badge bg-secondary">{{ task.effort }}</span>
+                        </div>
+                        {% if task.description and task.description != task.title %}
+                        <p class="small text-muted mb-0">{{ task.description[:100] }}{% if task.description|length > 100 %}...{% endif %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Generated Files -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5><i class="fas fa-code"></i> Generated Notebook Files ({{ notebook_files|length }})</h5>
+            <span class="badge bg-success">Ready for PR</span>
+        </div>
+        <div class="card-body">
+            {% if notebook_files %}
+            <div class="row">
+                {% for filename, content in notebook_files.items() %}
+                <div class="col-12 mb-4">
+                    <div class="border rounded">
+                        <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                <i class="fas fa-file-code"></i> 
+                                notebooks/story_{{ story.id }}/{{ filename }}
+                            </h6>
+                            <span class="badge bg-info">{{ content|length }} chars</span>
+                        </div>
+                        <div class="p-3">
+                            <pre class="bg-dark text-light p-3 rounded" style="max-height: 300px; overflow-y: auto;"><code>{{ content[:1000] }}{% if content|length > 1000 %}
+
+... ({{ content|length - 1000 }} more characters)
+{% endif %}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="fas fa-file-code fa-3x mb-3"></i>
+                <p>No notebook files generated yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- PR Action -->
+    {% if story.github_repo and notebook_files %}
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h5><i class="fas fa-rocket"></i> Create Pull Request</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h6>Ready to create PR</h6>
+                    <p class="text-muted">
+                        This will create a pull request in <strong>{{ story.github_repo }}</strong> 
+                        against the <strong>develop</strong> branch with {{ notebook_files|length }} generated notebook files
+                        and {{ tasks|length }} associated tasks.
+                    </p>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>What will be included:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>{{ notebook_files|length }} PySpark notebook files</li>
+                            <li>Comprehensive PR description with task breakdown</li>
+                            <li>Links back to this user story</li>
+                            <li>Automated ETL agent attribution</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <form method="POST" action="{{ url_for('create_github_pr', story_id=story.id) }}">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-code-branch"></i> Create Pull Request
+                        </button>
+                    </form>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-shield-alt"></i> 
+                            This will create a PR for review.<br>
+                            No direct merge to main branch.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Cannot create PR:</strong>
+        {% if not story.github_repo %}
+        No GitHub repository linked to this story.
+        {% elif not notebook_files %}
+        No notebook files generated yet.
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.github-link {
+    color: #333;
+    text-decoration: none;
+}
+.github-link:hover {
+    color: #0366d6;
+    text-decoration: underline;
+}
+.priority-high { background-color: #dc3545 !important; }
+.priority-medium { background-color: #ffc107 !important; color: #000; }
+.priority-low { background-color: #28a745 !important; }
+
+pre code {
+    font-size: 0.8em;
+    line-height: 1.4;
+}
+</style>
+{% endblock %}

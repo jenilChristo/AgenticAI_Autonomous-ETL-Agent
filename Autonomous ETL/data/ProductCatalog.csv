@@ -1,0 +1,41 @@
+SKU,ProductType,ProductName,Category,SubCategory,Brand,Model,Storage,Color,Price,CostPrice,Margin,LaunchDate,DiscontinuedDate,IsActive,WarrantyMonths,Weight,Dimensions
+IP15-PRO-256GB,iPhone,iPhone 15 Pro 256GB,Electronics,Smartphones,Apple,iPhone 15 Pro,256GB,Natural Titanium,129900,95000,34900,2023-09-22,,True,12,187g,146.6×70.6×8.25mm
+IP15-PRO-MAX-512GB,iPhone,iPhone 15 Pro Max 512GB,Electronics,Smartphones,Apple,iPhone 15 Pro Max,512GB,Blue Titanium,159900,120000,39900,2023-09-22,,True,12,221g,159.9×76.7×8.25mm
+IP15-128GB,iPhone,iPhone 15 128GB,Electronics,Smartphones,Apple,iPhone 15,128GB,Pink,79900,58000,21900,2023-09-22,,True,12,171g,147.6×71.6×7.80mm
+IP14-PRO-256GB,iPhone,iPhone 14 Pro 256GB,Electronics,Smartphones,Apple,iPhone 14 Pro,256GB,Deep Purple,109900,82000,27900,2022-09-16,,True,12,206g,147.5×71.5×7.85mm
+IP15-PRO-128GB,iPhone,iPhone 15 Pro 128GB,Electronics,Smartphones,Apple,iPhone 15 Pro,128GB,White Titanium,119900,88000,31900,2023-09-22,,True,12,187g,146.6×70.6×8.25mm
+IP15-CASE-LEATHER,iPhone,iPhone 15 Pro Leather Case,Electronics,Accessories,Apple,Leather Case,,Black,5999,2000,3999,2023-09-22,,True,6,45g,150×75×12mm
+IP15-256GB,iPhone,iPhone 15 256GB,Electronics,Smartphones,Apple,iPhone 15,256GB,Blue,89900,65000,24900,2023-09-22,,True,12,171g,147.6×71.6×7.80mm
+IP15-AIRPODS-PRO,iPhone,AirPods Pro (2nd Gen),Electronics,Audio,Apple,AirPods Pro,N/A,White,24900,18000,6900,2022-09-23,,True,12,50.8g,30.9×21.8×24.0mm
+IP14-128GB,iPhone,iPhone 14 128GB,Electronics,Smartphones,Apple,iPhone 14,128GB,Midnight,69900,52000,17900,2022-09-16,,True,12,172g,146.7×71.5×7.80mm
+IP15-PRO-MAX-1TB,iPhone,iPhone 15 Pro Max 1TB,Electronics,Smartphones,Apple,iPhone 15 Pro Max,1TB,Natural Titanium,189900,145000,44900,2023-09-22,,True,12,221g,159.9×76.7×8.25mm
+IP15-CHARGER-MAGSAFE,iPhone,MagSafe Charger,Electronics,Accessories,Apple,MagSafe,,White,4500,1500,3000,2020-10-13,,True,12,142g,95×95×6.8mm
+IP13-128GB,iPhone,iPhone 13 128GB,Electronics,Smartphones,Apple,iPhone 13,128GB,Starlight,59900,45000,14900,2021-09-24,,True,12,174g,146.7×71.5×7.65mm
+IP15-PRO-512GB,iPhone,iPhone 15 Pro 512GB,Electronics,Smartphones,Apple,iPhone 15 Pro,512GB,Black Titanium,144900,108000,36900,2023-09-22,,True,12,187g,146.6×70.6×8.25mm
+IP15-SCREEN-PROTECTOR,iPhone,iPhone 15 Pro Screen Protector,Electronics,Accessories,Belkin,Screen Protector,,Clear,1999,500,1499,2023-09-22,,True,3,15g,150×75×1mm
+IP14-PRO-MAX-512GB,iPhone,iPhone 14 Pro Max 512GB,Electronics,Smartphones,Apple,iPhone 14 Pro Max,512GB,Gold,139900,105000,34900,2022-09-16,,True,12,240g,160.7×77.6×7.85mm
+IP15-WIRELESS-CHARGER,iPhone,iPhone Wireless Charger,Electronics,Accessories,Anker,Wireless Charger,,Black,3999,1200,2799,2023-01-15,,True,12,250g,100×100×10mm
+IP15-WALLET-LEATHER,iPhone,iPhone Leather Wallet,Electronics,Accessories,Apple,Leather Wallet,,Brown,5999,2200,3799,2023-09-22,,True,6,35g,100×65×8mm
+IP14-256GB,iPhone,iPhone 14 256GB,Electronics,Smartphones,Apple,iPhone 14,256GB,Purple,79900,58000,21900,2022-09-16,,True,12,172g,146.7×71.5×7.80mm
+IP15-PRO-MAX-CASE,iPhone,iPhone 15 Pro Max Case,Electronics,Accessories,OtterBox,Defender Case,,Black,4999,1800,3199,2023-09-22,,True,12,85g,165×82×15mm
+IP13-PRO-256GB,iPhone,iPhone 13 Pro 256GB,Electronics,Smartphones,Apple,iPhone 13 Pro,256GB,Sierra Blue,94900,72000,22900,2021-09-24,,True,12,203g,146.7×71.5×7.65mm
+IP15-BATTERY-PACK,iPhone,iPhone Battery Pack,Electronics,Accessories,Apple,Battery Pack,,White,8999,3500,5499,2023-09-22,,True,12,115g,105×68×12mm
+IP15-CAR-MOUNT,iPhone,iPhone Car Mount,Electronics,Accessories,iOttie,Car Mount,,Black,2999,1000,1999,2023-05-10,,True,12,200g,120×80×50mm
+IP14-PRO-128GB,iPhone,iPhone 14 Pro 128GB,Electronics,Smartphones,Apple,iPhone 14 Pro,128GB,Space Black,99900,75000,24900,2022-09-16,,True,12,206g,147.5×71.5×7.85mm
+IP15-LIGHTNING-CABLE,iPhone,Lightning Cable 2m,Electronics,Accessories,Apple,Lightning Cable,,White,2999,800,2199,2012-09-12,,True,12,30g,2000×5×5mm
+IP15-PRO-CASE-CLEAR,iPhone,iPhone 15 Pro Clear Case,Electronics,Accessories,Apple,Clear Case,,Clear,3999,1200,2799,2023-09-22,,True,6,40g,150×75×10mm
+IP13-PRO-MAX-512GB,iPhone,iPhone 13 Pro Max 512GB,Electronics,Smartphones,Apple,iPhone 13 Pro Max,512GB,Graphite,119900,90000,29900,2021-09-24,,True,12,240g,160.8×78.1×7.65mm
+IP15-MAGSAFE-WALLET,iPhone,MagSafe Wallet,Electronics,Accessories,Apple,MagSafe Wallet,,Saddle Brown,5999,2500,3499,2020-10-13,,True,12,29g,97×64×7mm
+IP15-PRO-STAND,iPhone,iPhone Pro Stand,Electronics,Accessories,Twelve South,Stand,,Silver,9999,4000,5999,2023-09-22,,True,12,450g,150×120×100mm
+IP15-PRO-MAX-256GB,iPhone,iPhone 15 Pro Max 256GB,Electronics,Smartphones,Apple,iPhone 15 Pro Max,256GB,White Titanium,149900,112000,37900,2023-09-22,,True,12,221g,159.9×76.7×8.25mm
+IP15-POWER-ADAPTER,iPhone,iPhone Power Adapter,Electronics,Accessories,Apple,Power Adapter,,White,1999,600,1399,2020-10-13,,True,12,58g,55×55×28mm
+IP14-PRO-MAX-256GB,iPhone,iPhone 14 Pro Max 256GB,Electronics,Smartphones,Apple,iPhone 14 Pro Max,256GB,Silver,129900,98000,31900,2022-09-16,,True,12,240g,160.7×77.6×7.85mm
+IP15-GAMING-CONTROLLER,iPhone,iPhone Gaming Controller,Electronics,Accessories,Backbone,Gaming Controller,,Black,6999,3000,3999,2023-06-15,,True,12,140g,150×100×40mm
+IP13-256GB,iPhone,iPhone 13 256GB,Electronics,Smartphones,Apple,iPhone 13,256GB,Product RED,69900,52000,17900,2021-09-24,,True,12,174g,146.7×71.5×7.65mm
+IP15-PRO-MAX-STAND,iPhone,iPhone Pro Max Stand,Electronics,Accessories,Belkin,Stand,,Black,11999,5000,6999,2023-09-22,,True,12,680g,180×140×120mm
+IP14-PRO-512GB,iPhone,iPhone 14 Pro 512GB,Electronics,Smartphones,Apple,iPhone 14 Pro,512GB,Deep Purple,124900,94000,30900,2022-09-16,,True,12,206g,147.5×71.5×7.85mm
+IP15-MEMORY-CARD,iPhone,iPhone Memory Card 256GB,Electronics,Accessories,SanDisk,Memory Card,256GB,Black,7999,3000,4999,2023-01-20,,True,12,2g,15×11×1mm
+IP15-BLUETOOTH-SPEAKER,iPhone,iPhone Bluetooth Speaker,Electronics,Audio,JBL,Bluetooth Speaker,,Blue,8999,4000,4999,2023-03-10,,True,12,540g,218×95×95mm
+IP15-PRO-CAMERA-KIT,iPhone,iPhone Pro Camera Kit,Electronics,Accessories,Moment,Camera Kit,,Black,15999,8000,7999,2023-09-22,,True,12,280g,120×80×60mm
+IP13-PRO-128GB,iPhone,iPhone 13 Pro 128GB,Electronics,Smartphones,Apple,iPhone 13 Pro,128GB,Alpine Green,89900,68000,21900,2021-09-24,,True,12,203g,146.7×71.5×7.65mm
+IP15-PRO-MAX-GRIP,iPhone,iPhone Pro Max Grip,Electronics,Accessories,PopSocket,Grip,,Gold,3499,1000,2499,2023-09-22,,True,12,28g,40×40×8mm

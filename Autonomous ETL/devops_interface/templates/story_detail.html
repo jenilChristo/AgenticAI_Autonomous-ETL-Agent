@@ -1,0 +1,499 @@
+{% extends "base.html" %}
+
+{% block title %}{{ story.title }} - User Story{% endblock %}
+
+{% block content %}
+<!-- Story Header -->
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div class="flex-grow-1">
+        <div class="d-flex align-items-center mb-2">
+            <h1 class="me-3">{{ story.title }}</h1>
+            <span class="badge status-badge priority-{{ story.priority.lower() }} me-2">
+                {{ story.priority }} Priority
+            </span>
+            <span class="badge status-badge status-{{ story.status.lower().replace(' ', '-') }}">
+                {{ story.status }}
+            </span>
+        </div>
+        
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="text-muted">
+                <i class="fas fa-folder"></i> {{ story.project.name }}
+            </span>
+            {% if story.assigned_to %}
+            <span class="text-muted">
+                <i class="fas fa-user"></i> {{ story.assigned_to }}
+            </span>
+            {% endif %}
+            <span class="text-muted">
+                <i class="fas fa-calendar"></i> Created {{ story.created_date.strftime('%B %d, %Y') }}
+            </span>
+            {% if story.story_points > 0 %}
+            <span class="text-muted">
+                <i class="fas fa-chart-bar"></i> {{ story.story_points }} points
+            </span>
+            {% endif %}
+        </div>
+        
+        {% if story.github_issue_url %}
+        <div class="mb-3">
+            <a href="{{ story.github_issue_url }}" target="_blank" class="github-link">
+                <i class="fab fa-github"></i> {{ story.github_repo }}#{{ story.github_issue_number }}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- ETL Agent Actions -->
+    <div class="text-end">
+        <div class="mb-2">
+            <span class="badge status-badge etl-status-{{ story.etl_agent_status.lower().replace(' ', '-') }}" 
+                  id="etl-status-{{ story.id }}" data-story-id="{{ story.id }}">
+                <i class="fas fa-robot"></i> {{ story.etl_agent_status }}
+            </span>
+        </div>
+        
+        {% if story.etl_agent_status == 'Not Started' %}
+        <div class="btn-group" role="group">
+            <form method="POST" action="{{ url_for('process_with_etl', story_id=story.id) }}" class="d-inline">
+                <button type="submit" class="btn btn-azure">
+                    <i class="fas fa-play"></i> Process with ETL Agent
+                </button>
+            </form>
+            <button type="button" class="btn btn-outline-azure" onclick="processWithOrchestrator({{ story.id }})">
+                <i class="fas fa-robot"></i> Use Orchestrator
+            </button>
+        </div>
+        {% elif story.etl_agent_status == 'Processing' %}
+        <div class="btn-group" role="group">
+            <button class="btn btn-warning" disabled>
+                <i class="fas fa-spinner fa-spin"></i> Processing...
+            </button>
+            <button class="btn btn-outline-warning" onclick="checkOrchestratorStatus({{ story.id }})" title="Check orchestrator status">
+                <i class="fas fa-sync"></i>
+            </button>
+        </div>
+        {% elif story.etl_agent_status == 'Completed' and story.generated_notebook_path %}
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('view_notebook', story_id=story.id) }}" class="btn btn-success">
+                <i class="fas fa-eye"></i> View Notebook
+            </a>
+            <form method="POST" action="{{ url_for('process_with_etl', story_id=story.id) }}" class="d-inline">
+                <button type="submit" class="btn btn-outline-azure btn-sm">
+                    <i class="fas fa-redo"></i> Re-process
+                </button>
+            </form>
+        </div>
+        {% elif story.etl_agent_status == 'Failed' %}
+        <div class="btn-group" role="group">
+            <form method="POST" action="{{ url_for('process_with_etl', story_id=story.id) }}" class="d-inline">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-retry"></i> Retry ETL Agent
+                </button>
+            </form>
+            <button type="button" class="btn btn-outline-danger" onclick="processWithOrchestrator({{ story.id }})">
+                <i class="fas fa-robot"></i> Try Orchestrator
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <!-- Story Details -->
+    <div class="col-md-8">
+        <!-- Description -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-file-text"></i> Description</h5>
+            </div>
+            <div class="card-body">
+                {% if story.description %}
+                <div class="description-content">
+                    {{ story.description | replace('\n', '<br>') | safe }}
+                </div>
+                {% else %}
+                <p class="text-muted">No description provided.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Acceptance Criteria -->
+        {% if story.acceptance_criteria %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-check-square"></i> Acceptance Criteria</h5>
+            </div>
+            <div class="card-body">
+                <div class="acceptance-criteria">
+                    {{ story.acceptance_criteria | replace('\n', '<br>') | safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Tasks -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-tasks"></i> Tasks (<span id="tasks-count-{{ story.id }}">{{ tasks|length }}</span>)</h5>
+                {% if story.etl_agent_status == 'Completed' %}
+                <span class="badge bg-success">
+                    <i class="fas fa-robot"></i> Generated by ETL Agent
+                </span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if tasks %}
+                <div class="list-group list-group-flush">
+                    {% for task in tasks %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">
+                                    {{ task.title }}
+                                    {% if task.etl_generated %}
+                                    <span class="badge bg-primary badge-sm ms-2">
+                                        <i class="fas fa-robot"></i> Auto-generated
+                                    </span>
+                                    {% endif %}
+                                </h6>
+                                
+                                {% if task.description and task.description != task.title %}
+                                <p class="mb-1 small">{{ task.description }}</p>
+                                {% endif %}
+                                
+                                <div class="d-flex flex-wrap gap-1 mt-2">
+                                    <span class="badge bg-info">{{ task.task_type.replace('_', ' ').title() }}</span>
+                                    <span class="badge priority-{{ task.priority.lower() }}">{{ task.priority }}</span>
+                                    <span class="badge bg-secondary">{{ task.effort }}</span>
+                                    <span class="badge 
+                                        {% if task.status == 'To Do' %}bg-light text-dark
+                                        {% elif task.status == 'In Progress' %}bg-warning
+                                        {% elif task.status == 'Done' %}bg-success
+                                        {% endif %}">
+                                        {{ task.status }}
+                                    </span>
+                                    {% if task.assigned_to %}
+                                    <span class="badge bg-dark">{{ task.assigned_to }}</span>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if task.acceptance_criteria %}
+                                <details class="mt-2">
+                                    <summary class="small text-muted" style="cursor: pointer;">Acceptance Criteria</summary>
+                                    <div class="small mt-1">{{ task.acceptance_criteria | replace('\n', '<br>') | safe }}</div>
+                                </details>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="text-end">
+                                <small class="text-muted">{{ task.created_date.strftime('%m/%d') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-tasks fa-3x mb-3"></i>
+                    <p>No tasks yet</p>
+                    {% if story.etl_agent_status == 'Not Started' %}
+                    <p class="small">Use the ETL Agent to automatically generate tasks from the story requirements.</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <!-- ETL Agent Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6><i class="fas fa-robot"></i> ETL Agent Status</h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-robot fa-3x text-{{ 
+                            'success' if story.etl_agent_status == 'Completed' 
+                            else 'warning' if story.etl_agent_status == 'Processing'
+                            else 'danger' if story.etl_agent_status == 'Failed'
+                            else 'muted' }}"></i>
+                    </div>
+                    <h6>{{ story.etl_agent_status }}</h6>
+                    
+                    {% if story.etl_agent_status == 'Completed' %}
+                    <p class="small text-muted">
+                        Generated {{ tasks|length }} tasks and PySpark notebook
+                    </p>
+                    {% elif story.etl_agent_status == 'Processing' %}
+                    <p class="small text-muted">
+                        Analyzing requirements and generating code...
+                    </p>
+                    {% elif story.etl_agent_status == 'Failed' %}
+                    <p class="small text-danger">
+                        Processing failed. Check logs and retry.
+                    </p>
+                    {% else %}
+                    <p class="small text-muted">
+                        Ready to process with intelligent agent
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- ETL Executions -->
+        {% if executions %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6><i class="fas fa-history"></i> Execution History</h6>
+            </div>
+            <div class="card-body">
+                {% for execution in executions %}
+                <div class="border-bottom pb-2 mb-2">
+                    <div class="d-flex justify-content-between">
+                        <span class="badge bg-{{ 
+                            'success' if execution.status == 'Completed' 
+                            else 'warning' if execution.status == 'Processing'
+                            else 'danger' if execution.status == 'Failed'
+                            else 'secondary' }}">
+                            {{ execution.status }}
+                        </span>
+                        <small class="text-muted">{{ execution.started_at.strftime('%m/%d %H:%M') }}</small>
+                    </div>
+                    {% if execution.tasks_generated > 0 %}
+                    <small class="text-muted">Generated {{ execution.tasks_generated }} tasks</small>
+                    {% endif %}
+                    {% if execution.error_message %}
+                    <details>
+                        <summary class="small text-danger" style="cursor: pointer;">Error Details</summary>
+                        <div class="small mt-1 text-danger">{{ execution.error_message }}</div>
+                    </details>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- GitHub PR Actions -->
+        {% if story.etl_agent_status == 'Completed' and story.github_repo %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6><i class="fab fa-github"></i> GitHub Integration</h6>
+            </div>
+            <div class="card-body">
+                {% set execution = executions[0] if executions else None %}
+                {% if execution and execution.pr_created %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>PR Created!</strong><br>
+                    <a href="{{ execution.pr_url }}" target="_blank" class="btn btn-outline-success btn-sm mt-2">
+                        <i class="fas fa-external-link-alt"></i> View PR
+                    </a>
+                </div>
+                {% else %}
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('preview_pr_content', story_id=story.id) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye"></i> Preview PR Content
+                    </a>
+                    <form method="POST" action="{{ url_for('create_github_pr', story_id=story.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm w-100">
+                            <i class="fas fa-code-branch"></i> Create GitHub PR
+                        </button>
+                    </form>
+                </div>
+                <small class="text-muted mt-2 d-block">
+                    <i class="fas fa-info-circle"></i> 
+                    Will create PR against <strong>develop</strong> branch
+                </small>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-bolt"></i> Quick Actions</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="editStory()">
+                        <i class="fas fa-edit"></i> Edit Story
+                    </button>
+                    {% if story.github_issue_url %}
+                    <a href="{{ story.github_issue_url }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    {% endif %}
+                    {% if story.generated_notebook_path %}
+                    <a href="{{ url_for('view_notebook', story_id=story.id) }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-code"></i> View Generated Code
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function editStory() {
+    // Placeholder for edit functionality
+    alert('Edit functionality would be implemented here');
+}
+
+// Orchestrator Integration Functions
+async function processWithOrchestrator(storyId) {
+    try {
+        // Check orchestrator health first
+        const healthResponse = await fetch('/api/orchestrator/health');
+        const healthData = await healthResponse.json();
+        
+        if (healthData.status !== 'healthy') {
+            alert('⚠️ Orchestrator API is not available. Please contact administrator.');
+            return;
+        }
+        
+        // Start orchestrator processing
+        const response = await fetch(`/api/story/${storyId}/process_orchestrator`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('🚀 Orchestrator processing started! The page will refresh automatically when completed.');
+            location.reload();
+        } else {
+            alert(`❌ Failed to start orchestrator processing: ${data.error}`);
+        }
+        
+    } catch (error) {
+        console.error('Orchestrator processing error:', error);
+        alert('❌ Network error while starting orchestrator processing');
+    }
+}
+
+async function checkOrchestratorStatus(storyId) {
+    try {
+        const response = await fetch(`/api/story/${storyId}/status`);
+        const data = await response.json();
+        
+        let message = `Status: ${data.etl_status}\n`;
+        if (data.execution && data.execution.orchestrator_execution_id) {
+            message += `Orchestrator ID: ${data.execution.orchestrator_execution_id}\n`;
+        }
+        message += `Tasks: ${data.tasks_count}`;
+        
+        if (data.execution && data.execution.error) {
+            message += `\nError: ${data.execution.error}`;
+        }
+        
+        alert(message);
+        
+    } catch (error) {
+        console.error('Status check error:', error);
+        alert('❌ Failed to check status');
+    }
+}
+
+async function checkOrchestratorHealth() {
+    try {
+        const response = await fetch('/api/orchestrator/health');
+        const data = await response.json();
+        
+        let message = `Orchestrator Status: ${data.status}\n`;
+        if (data.orchestrator_ready !== undefined) {
+            message += `Ready: ${data.orchestrator_ready ? 'Yes' : 'No'}\n`;
+        }
+        if (data.model) {
+            message += `Model: ${data.model}`;
+        }
+        
+        alert(message);
+        
+    } catch (error) {
+        console.error('Health check error:', error);
+        alert('❌ Failed to check orchestrator health');
+    }
+}
+
+// Auto-refresh for processing stories with orchestrator support
+if (document.querySelector('[data-story-id]')) {
+    let refreshCount = 0;
+    const maxRefreshes = 60; // Stop after 3 minutes (60 * 3s intervals)
+    
+    const refreshInterval = setInterval(() => {
+        const element = document.querySelector('[data-story-id]');
+        const storyId = element.getAttribute('data-story-id');
+        
+        fetch(`/api/story/${storyId}/status`)
+            .then(response => response.json())
+            .then(data => {
+                // Update status badge
+                const statusBadge = document.getElementById(`etl-status-${storyId}`);
+                if (statusBadge) {
+                    statusBadge.textContent = `🤖 ${data.etl_status}`;
+                    statusBadge.className = `badge status-badge etl-status-${data.etl_status.toLowerCase().replace(' ', '-')}`;
+                }
+                
+                // Update task count
+                const tasksCount = document.getElementById(`tasks-count-${storyId}`);
+                if (tasksCount) {
+                    tasksCount.textContent = data.tasks_count;
+                }
+                
+                // Reload page when completed or failed, or stop after max refreshes
+                if (data.etl_status === 'Completed' || data.etl_status === 'Failed' || refreshCount >= maxRefreshes) {
+                    clearInterval(refreshInterval);
+                    if (data.etl_status === 'Completed' || data.etl_status === 'Failed') {
+                        location.reload();
+                    }
+                }
+                
+                refreshCount++;
+            })
+            .catch(error => {
+                console.log('Status refresh error:', error);
+                refreshCount++;
+            });
+    }, 3000);
+}
+
+// Add orchestrator health indicator
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('/api/orchestrator/health');
+        const data = await response.json();
+        
+        // Create health indicator
+        const healthIndicator = document.createElement('div');
+        healthIndicator.className = `alert ${data.status === 'healthy' ? 'alert-success' : 'alert-warning'} alert-dismissible fade show`;
+        healthIndicator.innerHTML = `
+            <strong>🤖 Orchestrator:</strong> ${data.status === 'healthy' ? 'Available' : 'Unavailable'} 
+            ${data.model ? `(${data.model})` : ''}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert at top of content
+        const content = document.querySelector('.container, .container-fluid');
+        if (content && content.firstChild) {
+            content.insertBefore(healthIndicator, content.firstChild);
+        }
+        
+    } catch (error) {
+        console.log('Orchestrator health check failed:', error);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+2025.09.25 10:06:31 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at d:\AgenticAI\Autonomous ETL\.metals\lsp.trace.json or C:\Users\jelazar\AppData\Local\scalameta\metals\cache\lsp.trace.json
+2025.09.25 10:06:33 INFO  logging to files D:\AgenticAI\Autonomous ETL\.metals\metals.log
+2025.09.25 10:06:33 INFO  Started: Metals version 1.6.2 in folders 'D:\AgenticAI\Autonomous ETL' for client Visual Studio Code 1.104.1.
+2025.09.25 10:06:35 WARN  no build tool detected in workspace 'D:\AgenticAI\Autonomous ETL'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.09.25 10:06:35 WARN  Build server is not auto-connectable.
+2025.09.25 11:45:58 INFO  Shutting down server
+2025.09.25 11:45:58 INFO  shutting down Metals
+2025.09.25 11:45:58 INFO  Exiting server
+2025.09.25 11:53:02 INFO  Started: Metals version 1.6.2 in folders 'D:\AgenticAI\Autonomous ETL' for client Visual Studio Code 1.104.1.
+2025.09.25 11:53:05 WARN  no build tool detected in workspace 'D:\AgenticAI\Autonomous ETL'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.09.25 11:53:05 WARN  Build server is not auto-connectable.
+2025.09.30 21:26:20 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at d:\AgenticAI\Autonomous ETL\.metals\lsp.trace.json or C:\Users\jelazar\AppData\Local\scalameta\metals\cache\lsp.trace.json
+2025.09.30 21:26:23 INFO  logging to files D:\AgenticAI\Autonomous ETL\.metals\metals.log
+2025.09.30 21:26:23 INFO  Started: Metals version 1.6.2 in folders 'D:\AgenticAI\Autonomous ETL' for client Visual Studio Code 1.104.2.
+2025.09.30 21:26:28 WARN  no build tool detected in workspace 'D:\AgenticAI\Autonomous ETL'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.09.30 21:26:29 WARN  Build server is not auto-connectable.
+2025.10.01 12:08:42 INFO  Shutting down server
+2025.10.01 12:08:42 INFO  shutting down Metals
+2025.10.01 12:08:42 INFO  Exiting server

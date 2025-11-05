@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - DevOps Interface{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+    <div>
+        <a href="{{ url_for('create_story') }}" class="btn btn-azure">
+            <i class="fas fa-plus"></i> New User Story
+        </a>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3><i class="fas fa-list"></i></h3>
+                <h2>{{ stats.total_stories }}</h2>
+                <p class="mb-0">Total Stories</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="background: linear-gradient(135deg, #107c10 0%, #0e6e0e 100%); color: white;">
+            <div class="card-body text-center">
+                <h3><i class="fas fa-play-circle"></i></h3>
+                <h2>{{ stats.active_stories }}</h2>
+                <p class="mb-0">Active Stories</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="background: linear-gradient(135deg, #ff8c00 0%, #e67c00 100%); color: white;">
+            <div class="card-body text-center">
+                <h3><i class="fas fa-check-circle"></i></h3>
+                <h2>{{ stats.completed_stories }}</h2>
+                <p class="mb-0">Completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="background: linear-gradient(135deg, #6f42c1 0%, #5a369c 100%); color: white;">
+            <div class="card-body text-center">
+                <h3><i class="fas fa-robot"></i></h3>
+                <h2>{{ stats.etl_processed }}</h2>
+                <p class="mb-0">ETL Processed</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Projects Overview -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-folder"></i> Projects</h5>
+                <a href="{{ url_for('projects') }}" class="btn btn-outline-primary btn-sm">View All</a>
+            </div>
+            <div class="card-body">
+                {% if projects %}
+                    <div class="list-group list-group-flush">
+                        {% for project in projects %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    <a href="{{ url_for('project_detail', project_id=project.id) }}" class="text-decoration-none">
+                                        {{ project.name }}
+                                    </a>
+                                </h6>
+                                <small class="text-muted">{{ project.description[:50] }}...</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">
+                                {{ project.user_stories|length }} stories
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-folder-open fa-3x mb-3"></i>
+                        <p>No projects yet</p>
+                        <a href="{{ url_for('create_project') }}" class="btn btn-azure">Create First Project</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent User Stories -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-bookmark"></i> Recent User Stories</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_stories %}
+                    <div class="list-group list-group-flush">
+                        {% for story in recent_stories %}
+                        <div class="list-group-item" data-story-id="{{ story.id }}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        <a href="{{ url_for('story_detail', story_id=story.id) }}" class="text-decoration-none">
+                                            {{ story.title }}
+                                        </a>
+                                    </h6>
+                                    <p class="mb-1 small text-muted">{{ story.description[:80] }}...</p>
+                                    
+                                    <div class="d-flex flex-wrap gap-1 mt-2">
+                                        <span class="badge status-badge priority-{{ story.priority.lower() }}">
+                                            {{ story.priority }}
+                                        </span>
+                                        <span class="badge status-badge status-{{ story.status.lower().replace(' ', '-') }}">
+                                            {{ story.status }}
+                                        </span>
+                                        <span class="badge status-badge etl-status-{{ story.etl_agent_status.lower().replace(' ', '-') }}" 
+                                              id="etl-status-{{ story.id }}">
+                                            {{ story.etl_agent_status }}
+                                        </span>
+                                        {% if story.github_issue_url %}
+                                        <a href="{{ story.github_issue_url }}" target="_blank" class="badge bg-dark text-decoration-none">
+                                            <i class="fab fa-github"></i> GitHub
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="text-end">
+                                    <small class="text-muted">{{ story.updated_date.strftime('%m/%d') }}</small>
+                                    {% if story.tasks %}
+                                    <br><small class="text-muted" id="tasks-count-{{ story.id }}">{{ story.tasks|length }} tasks</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-bookmark fa-3x mb-3"></i>
+                        <p>No user stories yet</p>
+                        <a href="{{ url_for('create_story') }}" class="btn btn-azure">Create First Story</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ETL Agent Status -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-robot"></i> ETL Agent Integration</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6>How it works:</h6>
+                        <ol>
+                            <li><strong>Create User Story:</strong> Add GitHub issue URL or describe requirements</li>
+                            <li><strong>Process with ETL Agent:</strong> Click "Process with ETL Agent" button</li>
+                            <li><strong>Automatic Generation:</strong> Agent analyzes, creates tasks, and generates PySpark notebook</li>
+                            <li><strong>Review & Deploy:</strong> Review generated code and deploy pipeline</li>
+                        </ol>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Tip:</strong> Paste a GitHub issue URL when creating stories for automatic analysis and task generation.
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="bg-light p-3 rounded">
+                            <h6>Agent Capabilities:</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check text-success"></i> GitHub issue analysis</li>
+                                <li><i class="fas fa-check text-success"></i> Task breakdown generation</li>
+                                <li><i class="fas fa-check text-success"></i> PySpark code generation</li>
+                                <li><i class="fas fa-check text-success"></i> Notebook creation</li>
+                                <li><i class="fas fa-check text-success"></i> Testing framework setup</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

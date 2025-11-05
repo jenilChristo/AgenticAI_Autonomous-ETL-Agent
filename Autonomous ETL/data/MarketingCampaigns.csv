@@ -1,0 +1,11 @@
+CampaignID,CampaignName,CampaignType,Channel,StartDate,EndDate,Budget,Spend,Impressions,Clicks,Conversions,Revenue,TargetAudience,CreativeType
+CAMP001,iPhone 15 Launch,Product Launch,Paid Search,2023-09-22,2023-10-22,5000000,4750000,15000000,750000,12500,812500000,Tech Enthusiasts,Video Ad
+CAMP002,iPhone Pro Premium,Premium Targeting,Social Media,2023-09-01,2023-12-31,3000000,2800000,8000000,400000,8000,520000000,High Income,Carousel Ad
+CAMP003,iPhone Trade-In,Trade-In Promo,Email Marketing,2023-10-01,2023-11-30,1000000,950000,2000000,200000,5000,325000000,Existing Customers,HTML Email
+CAMP004,Black Friday iPhone,Seasonal Sale,Multi-Channel,2023-11-20,2023-11-27,8000000,7600000,25000000,1250000,25000,1625000000,Mass Market,Video+Display
+CAMP005,iPhone Student Discount,Student Offer,Social Media,2023-08-15,2023-09-15,500000,475000,1500000,150000,2000,130000000,Students,Static Image
+CAMP006,iPhone Business,B2B Campaign,B2B Portal,2023-09-01,2024-02-29,2000000,1800000,500000,50000,1500,195000000,Enterprises,Whitepaper
+CAMP007,iPhone Accessories,Cross-sell,Display Ads,2023-10-15,2023-12-15,800000,760000,5000000,250000,7500,48750000,iPhone Owners,Banner Ad
+CAMP008,iPhone Upgrade,Upgrade Campaign,Email+Push,2023-11-01,2023-12-31,1500000,1425000,3000000,300000,6000,390000000,iPhone 12/13 Users,Push Notification
+CAMP009,Regional iPhone Push,Geographic,Regional Media,2023-10-01,2023-11-30,2500000,2375000,7000000,350000,5250,341250000,Tier 2/3 Cities,Local Language
+CAMP010,iPhone Photography,Feature Focus,YouTube,2023-09-30,2023-10-31,1200000,1140000,4000000,200000,3000,195000000,Photography Enthusiasts,Video Tutorial

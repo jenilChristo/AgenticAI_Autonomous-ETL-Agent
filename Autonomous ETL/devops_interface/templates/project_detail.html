@@ -1,0 +1,468 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} - Project Details{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1><i class="fas fa-project-diagram"></i> {{ project.name }}</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('projects') }}">Projects</a></li>
+                <li class="breadcrumb-item active">{{ project.name }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div>
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('create_story') }}?project_id={{ project.id }}" class="btn btn-azure">
+                <i class="fas fa-plus"></i> New Story
+            </a>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Project</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-users"></i> Manage Team</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-archive"></i> Archive Project</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Project Overview -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Project Information</h6>
+                        <p class="text-muted">{{ project.description }}</p>
+                        <div class="mb-2">
+                            <strong>Key:</strong> <code>{{ project.key }}</code>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Status:</strong> 
+                            {% if project.status == 'New' %}
+                                <span class="badge bg-primary">{{ project.status }}</span>
+                            {% elif project.status == 'Active' %}
+                                <span class="badge bg-success">{{ project.status }}</span>
+                            {% elif project.status == 'Complete' %}
+                                <span class="badge bg-info">{{ project.status }}</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">{{ project.status }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Created:</strong> {{ project.created_date.strftime('%B %d, %Y at %I:%M %p') }}
+                        </div>
+                        <div>
+                            <strong>Last Updated:</strong> {{ project.updated_date.strftime('%B %d, %Y at %I:%M %p') }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Project Progress</h6>
+                        {% set total_stories = project.user_stories|length %}
+                        {% if total_stories > 0 %}
+                            {% set completed_stories = project.user_stories | selectattr('status', 'equalto', 'Done') | list | length %}
+                            {% set progress_percent = (completed_stories / total_stories * 100) | round(1) %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>User Stories</span>
+                                    <span>{{ completed_stories }}/{{ total_stories }} ({{ progress_percent }}%)</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: {{ progress_percent }}%" 
+                                         aria-valuenow="{{ progress_percent }}" 
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {% set all_tasks = [] %}
+                        {% for story in project.user_stories %}
+                            {% set _ = all_tasks.extend(story.tasks) %}
+                        {% endfor %}
+                        {% set total_tasks = all_tasks|length %}
+                        {% if total_tasks > 0 %}
+                            {% set completed_tasks = all_tasks | selectattr('status', 'equalto', 'Done') | list | length %}
+                            {% set task_progress = (completed_tasks / total_tasks * 100) | round(1) %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Tasks</span>
+                                    <span>{{ completed_tasks }}/{{ total_tasks }} ({{ task_progress }}%)</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" 
+                                         style="width: {{ task_progress }}%" 
+                                         aria-valuenow="{{ task_progress }}" 
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Quick Stats -->
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-chart-bar"></i> Quick Stats</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 mb-3">
+                        <div class="h3 text-azure mb-0">{{ project.user_stories|length }}</div>
+                        <small class="text-muted">User Stories</small>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="h3 text-success mb-0">{{ all_tasks|length }}</div>
+                        <small class="text-muted">Total Tasks</small>
+                    </div>
+                    <div class="col-6">
+                        {% set etl_executions = [] %}
+                        {% for story in project.user_stories %}
+                            {% set _ = etl_executions.extend(story.etl_executions) %}
+                        {% endfor %}
+                        <div class="h3 text-info mb-0">{{ etl_executions|length }}</div>
+                        <small class="text-muted">ETL Runs</small>
+                    </div>
+                    <div class="col-6">
+                        {% set successful_runs = etl_executions | selectattr('status', 'equalto', 'completed') | list | length %}
+                        <div class="h3 text-warning mb-0">{{ successful_runs }}</div>
+                        <small class="text-muted">Successful</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Stories -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5><i class="fas fa-list"></i> User Stories ({{ project.user_stories|length }})</h5>
+        <div>
+            <div class="btn-group btn-group-sm" role="group">
+                <input type="radio" class="btn-check" name="viewMode" id="listView" checked>
+                <label class="btn btn-outline-secondary" for="listView">
+                    <i class="fas fa-list"></i> List
+                </label>
+                <input type="radio" class="btn-check" name="viewMode" id="boardView">
+                <label class="btn btn-outline-secondary" for="boardView">
+                    <i class="fas fa-columns"></i> Board
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- List View -->
+        <div id="listViewContent">
+            {% if project.user_stories %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Tasks</th>
+                                <th>ETL Agent</th>
+                                <th>Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for story in project.user_stories %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('story_detail', story_id=story.id) }}" class="text-decoration-none">
+                                        <strong>{{ story.title }}</strong>
+                                    </a>
+                                    {% if story.github_issue_url %}
+                                        <br><small class="text-muted">
+                                            <i class="fab fa-github"></i> Linked to GitHub
+                                        </small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if story.status == 'New' %}
+                                        <span class="badge bg-secondary">{{ story.status }}</span>
+                                    {% elif story.status == 'In Progress' %}
+                                        <span class="badge bg-primary">{{ story.status }}</span>
+                                    {% elif story.status == 'Done' %}
+                                        <span class="badge bg-success">{{ story.status }}</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">{{ story.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if story.priority == 1 %}
+                                        <span class="badge bg-danger">Critical</span>
+                                    {% elif story.priority == 2 %}
+                                        <span class="badge bg-warning text-dark">High</span>
+                                    {% elif story.priority == 3 %}
+                                        <span class="badge bg-info">Medium</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Low</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% set done_tasks = story.tasks | selectattr('status', 'equalto', 'Done') | list | length %}
+                                    <span class="text-success">{{ done_tasks }}</span> / {{ story.tasks|length }}
+                                    {% if story.tasks|length > 0 %}
+                                        {% set task_percent = (done_tasks / story.tasks|length * 100) | round %}
+                                        <div class="progress mt-1" style="height: 3px;">
+                                            <div class="progress-bar bg-success" style="width: {{ task_percent }}%"></div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if story.etl_executions %}
+                                        {% set latest_exec = story.etl_executions | sort(attribute='started_at', reverse=true) | first %}
+                                        {% if latest_exec.status == 'completed' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Success
+                                            </span>
+                                        {% elif latest_exec.status == 'running' %}
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-spinner fa-spin"></i> Running
+                                            </span>
+                                        {% elif latest_exec.status == 'failed' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> Failed
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ latest_exec.status.title() }}</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">Not run</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ story.updated_date.strftime('%m/%d/%Y') }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('story_detail', story_id=story.id) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="runETLAgent({{ story.id }})">
+                                            <i class="fas fa-robot"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                    <h5>No User Stories Yet</h5>
+                    <p class="text-muted">Create your first user story to get started with this project</p>
+                    <a href="{{ url_for('create_story') }}?project_id={{ project.id }}" class="btn btn-azure">
+                        <i class="fas fa-plus"></i> Create User Story
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Board View -->
+        <div id="boardViewContent" style="display: none;">
+            <div class="row">
+                {% set statuses = ['New', 'In Progress', 'Review', 'Done'] %}
+                {% for status in statuses %}
+                <div class="col-md-3">
+                    <div class="card bg-light">
+                        <div class="card-header bg-secondary text-white">
+                            <h6 class="mb-0">{{ status }}</h6>
+                        </div>
+                        <div class="card-body p-2" style="min-height: 400px;">
+                            {% for story in project.user_stories %}
+                                {% if story.status == status %}
+                                <div class="card mb-2 story-card" data-story-id="{{ story.id }}">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title">{{ story.title[:50] }}{% if story.title|length > 50 %}...{% endif %}</h6>
+                                        <p class="card-text small text-muted">{{ story.description[:80] }}{% if story.description|length > 80 %}...{% endif %}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                {% if story.priority == 1 %}
+                                                    <i class="fas fa-exclamation-triangle text-danger"></i>
+                                                {% elif story.priority == 2 %}
+                                                    <i class="fas fa-arrow-up text-warning"></i>
+                                                {% elif story.priority == 3 %}
+                                                    <i class="fas fa-minus text-info"></i>
+                                                {% else %}
+                                                    <i class="fas fa-arrow-down text-secondary"></i>
+                                                {% endif %}
+                                            </small>
+                                            <small class="text-muted">{{ story.tasks|length }} tasks</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ETL Agent Status -->
+{% if etl_executions %}
+<div class="card mt-4">
+    <div class="card-header">
+        <h5><i class="fas fa-robot"></i> Recent ETL Agent Activity</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>User Story</th>
+                        <th>Status</th>
+                        <th>Started</th>
+                        <th>Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for execution in etl_executions[:10] %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('story_detail', story_id=execution.user_story.id) }}">
+                                {{ execution.user_story.title }}
+                            </a>
+                        </td>
+                        <td>
+                            {% if execution.status == 'completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif execution.status == 'running' %}
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-spinner fa-spin"></i> Running
+                                </span>
+                            {% elif execution.status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ execution.status.title() }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ execution.started_at.strftime('%m/%d/%Y %I:%M %p') }}</td>
+                        <td>
+                            {% if execution.completed_at %}
+                                {% set duration = execution.completed_at - execution.started_at %}
+                                {{ duration.total_seconds() | round }}s
+                            {% elif execution.status == 'running' %}
+                                <span class="text-muted">In progress...</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if execution.notebook_path %}
+                                <a href="{{ url_for('notebook_viewer', story_id=execution.user_story.id) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-code"></i> View Code
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// View mode toggle
+document.getElementById('listView').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('listViewContent').style.display = 'block';
+        document.getElementById('boardViewContent').style.display = 'none';
+    }
+});
+
+document.getElementById('boardView').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('listViewContent').style.display = 'none';
+        document.getElementById('boardViewContent').style.display = 'block';
+    }
+});
+
+// Run ETL Agent
+function runETLAgent(storyId) {
+    const btn = event.target.closest('button');
+    const originalContent = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    btn.disabled = true;
+    
+    fetch(`/stories/${storyId}/run-etl`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('ETL Agent started successfully', 'success');
+            // Refresh the page after a short delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            showAlert(data.message || 'Failed to start ETL Agent', 'danger');
+        }
+    })
+    .catch(error => {
+        showAlert('Error starting ETL Agent', 'danger');
+    })
+    .finally(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    });
+}
+
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container-fluid');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+// Auto-refresh ETL status every 30 seconds
+setInterval(function() {
+    const runningBadges = document.querySelectorAll('.badge:contains("Running")');
+    if (runningBadges.length > 0) {
+        window.location.reload();
+    }
+}, 30000);
+</script>
+{% endblock %}

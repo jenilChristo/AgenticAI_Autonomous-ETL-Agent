@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1><i class="fas fa-project-diagram"></i> Projects</h1>
+        <p class="text-muted">Manage your data engineering projects and ETL pipelines</p>
+    </div>
+    <div>
+        <a href="{{ url_for('create_project') }}" class="btn btn-azure">
+            <i class="fas fa-plus"></i> New Project
+        </a>
+    </div>
+</div>
+
+<!-- Filters and Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Search projects..." id="searchInput">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="New">New</option>
+                    <option value="Active">Active</option>
+                    <option value="Complete">Complete</option>
+                    <option value="On Hold">On Hold</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="sortBy">
+                    <option value="updated_desc">Recently Updated</option>
+                    <option value="created_desc">Recently Created</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Projects Grid -->
+{% if projects %}
+<div class="row" id="projectsGrid">
+    {% for project in projects %}
+    <div class="col-lg-4 col-md-6 mb-4 project-card" 
+         data-name="{{ project.name.lower() }}" 
+         data-status="{{ project.status }}"
+         data-created="{{ project.created_date.isoformat() }}"
+         data-updated="{{ project.updated_date.isoformat() }}">
+        <div class="card h-100 shadow-sm project-item">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0">
+                        <a href="{{ url_for('project_detail', project_id=project.id) }}" class="text-decoration-none">
+                            {{ project.name }}
+                        </a>
+                    </h6>
+                    <small class="text-muted">{{ project.key }}</small>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url_for('project_detail', project_id=project.id) }}">
+                            <i class="fas fa-eye"></i> View Details
+                        </a></li>
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-edit"></i> Edit Project
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ project.id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text text-muted small">{{ project.description[:120] }}{% if project.description|length > 120 %}...{% endif %}</p>
+                
+                <!-- Status Badge -->
+                <div class="mb-2">
+                    {% if project.status == 'New' %}
+                        <span class="badge bg-primary">{{ project.status }}</span>
+                    {% elif project.status == 'Active' %}
+                        <span class="badge bg-success">{{ project.status }}</span>
+                    {% elif project.status == 'Complete' %}
+                        <span class="badge bg-info">{{ project.status }}</span>
+                    {% elif project.status == 'On Hold' %}
+                        <span class="badge bg-warning text-dark">{{ project.status }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ project.status }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Project Statistics -->
+                <div class="row text-center small">
+                    <div class="col-4">
+                        <div class="fw-bold text-azure">{{ project.user_stories|length }}</div>
+                        <div class="text-muted">Stories</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="fw-bold text-success">
+                            {{ project.user_stories | selectattr('status', 'equalto', 'Done') | list | length }}
+                        </div>
+                        <div class="text-muted">Done</div>
+                    </div>
+                    <div class="col-4">
+                        {% set total_tasks = project.user_stories | sum(attribute='tasks') | length %}
+                        {% set completed_tasks = project.user_stories | sum(attribute='tasks') | selectattr('status', 'equalto', 'Done') | list | length %}
+                        <div class="fw-bold text-info">{{ completed_tasks }}/{{ total_tasks }}</div>
+                        <div class="text-muted">Tasks</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                {% set total_stories = project.user_stories|length %}
+                {% if total_stories > 0 %}
+                    {% set completed_stories = project.user_stories | selectattr('status', 'equalto', 'Done') | list | length %}
+                    {% set progress_percent = (completed_stories / total_stories * 100) | round(1) %}
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span>Progress</span>
+                            <span>{{ progress_percent }}%</span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: {{ progress_percent }}%"></div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- ETL Agent Activity -->
+                {% set recent_executions = project.user_stories | sum(attribute='etl_executions') | list %}
+                {% if recent_executions %}
+                    {% set latest_execution = recent_executions | sort(attribute='started_at', reverse=true) | first %}
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-robot"></i> 
+                            ETL Agent: 
+                            {% if latest_execution.status == 'completed' %}
+                                <span class="text-success">Last run successful</span>
+                            {% elif latest_execution.status == 'running' %}
+                                <span class="text-primary">Currently running</span>
+                            {% elif latest_execution.status == 'failed' %}
+                                <span class="text-danger">Last run failed</span>
+                            {% else %}
+                                <span class="text-warning">{{ latest_execution.status.title() }}</span>
+                            {% endif %}
+                        </small>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-light">
+                <div class="row text-muted small">
+                    <div class="col-6">
+                        <i class="fas fa-calendar"></i>
+                        Created: {{ project.created_date.strftime('%m/%d/%Y') }}
+                    </div>
+                    <div class="col-6 text-end">
+                        <i class="fas fa-clock"></i>
+                        Updated: {{ project.updated_date.strftime('%m/%d/%Y') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Load More Button -->
+{% if projects|length >= 12 %}
+<div class="text-center mt-4">
+    <button class="btn btn-outline-azure" onclick="loadMoreProjects()">
+        <i class="fas fa-chevron-down"></i> Load More Projects
+    </button>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Empty State -->
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="fas fa-project-diagram fa-5x text-muted"></i>
+    </div>
+    <h3>No Projects Yet</h3>
+    <p class="text-muted mb-4">Get started by creating your first data engineering project</p>
+    <a href="{{ url_for('create_project') }}" class="btn btn-azure btn-lg">
+        <i class="fas fa-plus"></i> Create First Project
+    </a>
+</div>
+{% endif %}
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Warning:</strong> All user stories, tasks, and ETL agent executions associated with this project will also be deleted.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete Project
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let projectToDelete = null;
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', filterProjects);
+document.getElementById('statusFilter').addEventListener('change', filterProjects);
+document.getElementById('sortBy').addEventListener('change', sortProjects);
+
+function filterProjects() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+        const projectName = card.getAttribute('data-name');
+        const projectStatus = card.getAttribute('data-status');
+        
+        const matchesSearch = projectName.includes(searchTerm);
+        const matchesStatus = !statusFilter || projectStatus === statusFilter;
+        
+        if (matchesSearch && matchesStatus) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function sortProjects() {
+    const sortBy = document.getElementById('sortBy').value;
+    const grid = document.getElementById('projectsGrid');
+    const cards = Array.from(document.querySelectorAll('.project-card'));
+    
+    cards.sort((a, b) => {
+        switch (sortBy) {
+            case 'name_asc':
+                return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+            case 'name_desc':
+                return b.getAttribute('data-name').localeCompare(a.getAttribute('data-name'));
+            case 'created_desc':
+                return new Date(b.getAttribute('data-created')) - new Date(a.getAttribute('data-created'));
+            case 'updated_desc':
+            default:
+                return new Date(b.getAttribute('data-updated')) - new Date(a.getAttribute('data-updated'));
+        }
+    });
+    
+    // Re-append sorted cards
+    cards.forEach(card => grid.appendChild(card));
+}
+
+function confirmDelete(projectId) {
+    projectToDelete = projectId;
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if (projectToDelete) {
+        // Make AJAX request to delete project
+        fetch(`/projects/${projectToDelete}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the project card from DOM
+                const projectCard = document.querySelector(`[data-project-id="${projectToDelete}"]`);
+                if (projectCard) {
+                    projectCard.remove();
+                }
+                
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                
+                // Show success message
+                showAlert('Project deleted successfully', 'success');
+            } else {
+                showAlert('Failed to delete project', 'danger');
+            }
+        })
+        .catch(error => {
+            showAlert('Error deleting project', 'danger');
+        });
+    }
+});
+
+function loadMoreProjects() {
+    // Implementation for pagination
+    const currentCount = document.querySelectorAll('.project-card').length;
+    
+    fetch(`/projects/load-more?offset=${currentCount}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.projects && data.projects.length > 0) {
+                // Append new projects to grid
+                const grid = document.getElementById('projectsGrid');
+                data.projects.forEach(project => {
+                    // Create and append project cards
+                    // Implementation would depend on server response format
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading more projects:', error);
+        });
+}
+
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container-fluid');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    // Auto-dismiss after 3 seconds
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 3000);
+}
+
+// Add hover effects to project cards
+document.querySelectorAll('.project-item').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '';
+    });
+});
+</script>
+{% endblock %}

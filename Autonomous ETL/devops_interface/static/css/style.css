@@ -1,0 +1,496 @@
+/* Custom CSS for DevOps Interface */
+
+/* Azure DevOps Color Scheme */
+:root {
+    --azure-blue: #0078d4;
+    --azure-dark: #106ebe;
+    --azure-light: #deecf9;
+    --azure-border: #c7e0f4;
+    --success-green: #107c10;
+    --warning-orange: #ff8c00;
+    --error-red: #d13438;
+    --text-primary: #323130;
+    --text-secondary: #605e5c;
+    --bg-light: #faf9f8;
+    --bg-card: #ffffff;
+    --border-color: #edebe9;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-light);
+}
+
+/* Navigation Styles */
+.navbar-brand {
+    font-weight: 600;
+    color: var(--azure-blue) !important;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--azure-blue) !important;
+}
+
+/* Azure Button Styles */
+.btn-azure {
+    background-color: var(--azure-blue);
+    border-color: var(--azure-blue);
+    color: white;
+    font-weight: 500;
+}
+
+.btn-azure:hover {
+    background-color: var(--azure-dark);
+    border-color: var(--azure-dark);
+    color: white;
+}
+
+.btn-outline-azure {
+    border-color: var(--azure-blue);
+    color: var(--azure-blue);
+    font-weight: 500;
+}
+
+.btn-outline-azure:hover {
+    background-color: var(--azure-blue);
+    border-color: var(--azure-blue);
+    color: white;
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+/* Status Badges */
+.badge {
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+.badge.bg-azure {
+    background-color: var(--azure-blue) !important;
+}
+
+/* Progress Bars */
+.progress {
+    height: 8px;
+    background-color: var(--bg-light);
+    border-radius: 4px;
+}
+
+.progress-bar {
+    border-radius: 4px;
+}
+
+/* Forms */
+.form-control:focus {
+    border-color: var(--azure-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 120, 212, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--azure-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 120, 212, 0.25);
+}
+
+/* Tables */
+.table {
+    color: var(--text-primary);
+}
+
+.table th {
+    border-top: none;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+    background-color: var(--bg-light);
+}
+
+.table td {
+    border-top: 1px solid var(--border-color);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--azure-light);
+}
+
+/* Alert Styles */
+.alert-azure {
+    background-color: var(--azure-light);
+    border-color: var(--azure-border);
+    color: var(--azure-dark);
+}
+
+/* ETL Status Indicators */
+.etl-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.etl-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.etl-status-dot.running {
+    background-color: var(--azure-blue);
+    animation: pulse 1.5s infinite;
+}
+
+.etl-status-dot.success {
+    background-color: var(--success-green);
+}
+
+.etl-status-dot.error {
+    background-color: var(--error-red);
+}
+
+.etl-status-dot.idle {
+    background-color: var(--text-secondary);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Statistics Cards */
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-light) 100%);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Project Cards */
+.project-card {
+    transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+}
+
+/* User Story Cards */
+.story-card {
+    border-left: 4px solid var(--azure-blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.story-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-left-color: var(--azure-dark);
+}
+
+.story-card.priority-1 {
+    border-left-color: var(--error-red);
+}
+
+.story-card.priority-2 {
+    border-left-color: var(--warning-orange);
+}
+
+.story-card.priority-3 {
+    border-left-color: var(--azure-blue);
+}
+
+.story-card.priority-4 {
+    border-left-color: var(--text-secondary);
+}
+
+/* Task List */
+.task-item {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    background-color: var(--bg-card);
+    transition: background-color 0.2s ease;
+}
+
+.task-item:hover {
+    background-color: var(--azure-light);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+    text-decoration: line-through;
+}
+
+/* Code Block Styling */
+.code-block {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    overflow-x: auto;
+    border: 1px solid #333;
+}
+
+.code-block::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-block::-webkit-scrollbar-track {
+    background: #2d2d30;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+    background: #424245;
+    border-radius: 4px;
+}
+
+/* Markdown Content */
+.markdown-content {
+    line-height: 1.6;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content p {
+    margin-bottom: 1rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.sidebar-nav .nav-link {
+    color: var(--text-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+    background-color: var(--azure-light);
+    color: var(--azure-dark);
+}
+
+.sidebar-nav .nav-link.active {
+    background-color: var(--azure-blue);
+    color: white;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: var(--text-secondary);
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.1em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-group .btn {
+        font-size: 0.875rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #ffffff;
+        --text-secondary: #d2d0ce;
+        --bg-light: #1f1f1f;
+        --bg-card: #2d2d30;
+        --border-color: #404040;
+    }
+    
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-primary);
+    }
+    
+    .navbar {
+        background-color: var(--bg-card) !important;
+    }
+    
+    .table {
+        color: var(--text-primary);
+    }
+    
+    .table th {
+        background-color: var(--bg-light);
+    }
+}
+
+/* Utility Classes */
+.text-azure {
+    color: var(--azure-blue) !important;
+}
+
+.bg-azure {
+    background-color: var(--azure-blue) !important;
+}
+
+.border-azure {
+    border-color: var(--azure-blue) !important;
+}
+
+.shadow-azure {
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.15) !important;
+}
+
+/* Custom Animations */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Print Styles */
+@media print {
+    .btn,
+    .navbar,
+    .sidebar,
+    .dropdown {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}

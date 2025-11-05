@@ -1,0 +1,52 @@
+# Core LangChain and orchestration with LangGraph
+langchain>=0.1.0
+langchain-openai>=0.1.0
+langgraph>=0.2.0
+langchain-anthropic>=0.1.0
+langchain-community>=0.0.20
+# langsmith removed - no tracing needed
+
+# GitHub API integration  
+PyGithub>=1.59.0
+
+# AI/ML providers
+openai>=1.12.0
+anthropic>=0.18.0
+requests>=2.31.0
+
+# PySpark and data processing
+pyspark>=3.4.0
+py4j>=0.10.9.5
+
+# Configuration and environment
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Testing frameworks
+pytest>=7.4.0
+pytest-spark>=0.6.0
+pytest-asyncio>=0.21.0
+
+# Utilities and async support
+aiofiles>=23.1.0
+asyncio-throttle>=1.0.2
+tenacity>=8.2.0
+
+# Code quality and formatting
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Optional: Jupyter notebook support
+jupyter>=1.0.0
+ipykernel>=6.25.0
+
+# Optional: Database connectivity (uncomment as needed)
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0
+# pymongo>=4.5.0
+
+# Optional: Cloud storage (uncomment as needed)  
+# boto3>=1.28.0
+# azure-storage-blob>=12.18.0
+# google-cloud-storage>=2.10.0

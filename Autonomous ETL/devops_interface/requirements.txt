@@ -1,0 +1,4 @@
+# DevOps Interface Web App Requirements
+flask>=2.3.0
+flask-sqlalchemy>=3.0.0
+requests>=2.31.0

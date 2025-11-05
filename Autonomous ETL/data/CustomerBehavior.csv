@@ -1,0 +1,51 @@
+ActivityID,CustomerID,ActivityType,ActivityTimestamp,DeviceType,Platform,SessionDuration,PageViews,ProductViewed,SearchQuery,ClickType,ConversionFlag
+ACT001,CUST0001,Product View,2025-09-30 14:25:22,Mobile,iOS,00:15:30,8,IP15-PRO-256GB,iPhone 15 Pro review,Product Image,Yes
+ACT002,CUST0001,Add to Cart,2025-09-30 14:28:45,Mobile,iOS,00:15:30,8,IP15-PRO-256GB,,Add to Cart,Yes
+ACT003,CUST0001,Purchase,2025-09-30 14:30:22,Mobile,iOS,00:15:30,8,IP15-PRO-256GB,,Purchase Button,Yes
+ACT004,CUST0002,Search,2025-09-25 16:40:12,Desktop,Web,00:22:15,12,IP15-128GB,iPhone 15 best price,Search Bar,Yes
+ACT005,CUST0002,Product View,2025-09-25 16:42:30,Desktop,Web,00:22:15,12,IP15-128GB,,Product Link,Yes
+ACT006,CUST0002,Compare Products,2025-09-25 16:44:18,Desktop,Web,00:22:15,12,IP15-128GB,iPhone 15 vs iPhone 14,Compare Button,Yes
+ACT007,CUST0003,Email Click,2025-09-22 09:25:45,Mobile,Android,00:08:20,4,IP14-PRO-256GB,,Email Link,Yes
+ACT008,CUST0003,Product View,2025-09-22 09:28:12,Mobile,Android,00:08:20,4,IP14-PRO-256GB,,Direct Link,Yes
+ACT009,CUST0004,Social Media Click,2025-09-20 18:15:11,Desktop,Web,00:12:45,6,IP15-PRO-128GB,,Social Ad,Yes
+ACT010,CUST0004,Product View,2025-09-20 18:17:33,Desktop,Web,00:12:45,6,IP15-PRO-128GB,,Social Redirect,Yes
+ACT011,CUST0001,Browse Category,2025-09-18 12:05:55,Mobile,iOS,00:10:30,5,IP15-CASE-LEATHER,iPhone accessories,Category Page,Yes
+ACT012,CUST0005,Search,2025-09-15 14:18:33,Tablet,iOS,00:18:40,9,IP15-256GB,affordable iPhone 15,Search Bar,Yes
+ACT013,CUST0005,Filter Products,2025-09-15 14:20:15,Tablet,iOS,00:18:40,9,IP15-256GB,,Price Filter,Yes
+ACT014,CUST0002,Product View,2025-09-12 11:40:22,Mobile,Android,00:06:15,3,IP15-AIRPODS-PRO,,Cross-sell,Yes
+ACT015,CUST0006,Organic Search,2025-09-10 15:25:44,Desktop,Web,00:14:20,7,IP14-128GB,iPhone 14 discount,Google Search,Yes
+ACT016,CUST0007,Direct Visit,2025-09-08 13:20:18,Mobile,iOS,00:05:45,3,IP15-PRO-MAX-1TB,,Bookmark,Yes
+ACT017,CUST0003,Product View,2025-09-05 10:12:30,Desktop,Web,00:08:15,4,IP15-CHARGER-MAGSAFE,,Recommended,Yes
+ACT018,CUST0008,Price Comparison,2025-09-03 16:35:25,Mobile,Android,00:25:40,15,IP13-128GB,cheapest iPhone 13,Price Compare,Yes
+ACT019,CUST0009,Paid Ad Click,2025-09-01 09:50:12,Desktop,Web,00:11:30,6,IP15-PRO-512GB,,Google Ad,Yes
+ACT020,CUST0004,Product View,2025-08-30 14:18:45,Mobile,iOS,00:07:20,4,IP15-SCREEN-PROTECTOR,,Accessory View,Yes
+ACT021,CUST0010,Product View,2025-08-28 11:25:33,Desktop,Web,00:16:45,8,IP14-PRO-MAX-512GB,iPhone Pro Max features,Organic Search,Yes
+ACT022,CUST0005,Search,2025-08-25 13:40:22,Tablet,iOS,00:09:30,5,IP15-WIRELESS-CHARGER,wireless charging iPhone,Search Bar,Yes
+ACT023,CUST0011,B2B Portal,2025-08-22 15:05:11,Desktop,Web,00:30:20,18,IP15-PRO-256GB,,B2B Login,Yes
+ACT024,CUST0001,Browse Category,2025-08-20 17:22:44,Mobile,iOS,00:05:15,3,IP15-WALLET-LEATHER,iPhone wallet,Accessory Category,Yes
+ACT025,CUST0012,Social Media,2025-08-18 12:35:33,Mobile,Android,00:13:20,7,IP15-128GB,,Instagram Ad,Yes
+ACT026,CUST0013,Email Click,2025-08-15 14:50:22,Desktop,Web,00:10:40,5,IP14-256GB,,Newsletter,Yes
+ACT027,CUST0007,Product View,2025-08-12 16:12:11,Mobile,iOS,00:04:30,2,IP15-PRO-MAX-CASE,,Quick Purchase,Yes
+ACT028,CUST0014,Paid Search,2025-08-10 10:25:44,Desktop,Web,00:19:15,10,IP13-PRO-256GB,iPhone 13 Pro deals,Google Ad,Yes
+ACT029,CUST0002,Product View,2025-08-08 13:18:33,Mobile,Android,00:06:45,3,IP15-BATTERY-PACK,,Suggested Item,Yes
+ACT030,CUST0015,Organic Search,2025-08-05 09:40:22,Desktop,Web,00:21:30,11,IP15-PRO-512GB,iPhone 15 Pro 512GB review,Google Search,Yes
+ACT031,CUST0003,Browse Category,2025-08-03 11:52:11,Mobile,Android,00:04:20,2,IP15-CAR-MOUNT,car accessories,Category Page,Yes
+ACT032,CUST0016,Affiliate Link,2025-08-01 14:05:44,Mobile,iOS,00:15:20,8,IP14-PRO-128GB,,Cashback Site,Yes
+ACT033,CUST0009,Product View,2025-07-30 16:22:33,Desktop,Web,00:08:40,4,IP15-LIGHTNING-CABLE,,Accessory Upsell,Yes
+ACT034,CUST0017,Paid Search,2025-07-28 12:37:22,Mobile,Android,00:12:15,6,IP15-256GB,iPhone 15 256GB price,Bing Ad,Yes
+ACT035,CUST0004,Browse Category,2025-07-25 15:52:11,Desktop,Web,00:06:30,3,IP15-PRO-CASE-CLEAR,iPhone cases,Accessory Category,Yes
+ACT036,CUST0018,Organic Search,2025-07-23 10:12:44,Mobile,iOS,00:18:20,9,IP13-PRO-MAX-512GB,iPhone 13 Pro Max storage,Google Search,Yes
+ACT037,CUST0010,Product View,2025-07-20 13:27:33,Desktop,Web,00:07:15,4,IP15-MAGSAFE-WALLET,,Recommended Item,Yes
+ACT038,CUST0019,Price Comparison,2025-07-18 17:42:22,Mobile,Android,00:28:45,16,IP14-128GB,iPhone 14 EMI options,Price Compare,Yes
+ACT039,CUST0001,Browse Category,2025-07-15 11:17:11,Mobile,iOS,00:05:45,3,IP15-PRO-STAND,iPhone stands,Accessory Category,Yes
+ACT040,CUST0020,Direct Visit,2025-07-12 14:32:44,Desktop,Web,00:08:20,4,IP15-PRO-MAX-256GB,,VIP Portal,Yes
+ACT041,CUST0005,Affiliate Link,2025-07-10 16:47:33,Tablet,iOS,00:11:30,6,IP15-POWER-ADAPTER,,Coupon Site,Yes
+ACT042,CUST0021,Email Marketing,2025-07-08 09:12:22,Desktop,Web,00:16:40,8,IP14-PRO-MAX-256GB,,Email Campaign,Yes
+ACT043,CUST0011,B2B Portal,2025-07-05 12:27:11,Desktop,Web,00:25:15,14,IP15-GAMING-CONTROLLER,,Enterprise Portal,Yes
+ACT044,CUST0022,Social Media,2025-07-03 15:42:44,Mobile,Android,00:09:20,5,IP15-128GB,,Facebook Ad,Yes
+ACT045,CUST0002,Product View,2025-07-01 18:17:33,Mobile,Android,00:05:30,3,IP15-TRIPOD,,Cross-sell View,Yes
+ACT046,CUST0023,Price Comparison,2025-06-28 13:32:22,Desktop,Web,00:22:40,13,IP13-256GB,budget iPhone options,Price Compare,Yes
+ACT047,CUST0007,Browse Category,2025-06-25 10:47:11,Mobile,iOS,00:06:15,3,IP15-PRO-MAX-STAND,premium accessories,VIP Category,Yes
+ACT048,CUST0024,Organic Search,2025-06-23 14:12:44,Desktop,Web,00:17:30,9,IP14-PRO-512GB,iPhone 14 Pro storage options,Google Search,Yes
+ACT049,CUST0003,Product View,2025-06-20 16:27:33,Mobile,Android,00:07:45,4,IP15-MEMORY-CARD,,Storage Solutions,Yes
+ACT050,CUST0025,Paid Search,2025-06-18 11:42:22,Desktop,Web,00:14:20,7,IP15-PRO-128GB,iPhone 15 Pro deals,Google Ad,Yes

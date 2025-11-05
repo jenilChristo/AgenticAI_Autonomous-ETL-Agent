@@ -1,0 +1,51 @@
+OrderID,CustomerID,ProductType,SKU,ProductName,Quantity,UnitPrice,OrderValue,OrderTimestamp,PaymentMethod,DeliveryStatus,CustomerSegment,AcquisitionChannel
+ORD001,CUST0001,iPhone,IP15-PRO-256GB,iPhone 15 Pro 256GB,1,129900,129900,2025-09-30 14:30:22,Credit Card,Delivered,Premium,Organic Search
+ORD002,CUST0001,iPhone,IP15-PRO-MAX-512GB,iPhone 15 Pro Max 512GB,1,159900,159900,2025-09-28 10:15:33,Credit Card,Delivered,Premium,Direct
+ORD003,CUST0002,iPhone,IP15-128GB,iPhone 15 128GB,2,79900,159800,2025-09-25 16:45:12,EMI,In Transit,Standard,Social Media
+ORD004,CUST0003,iPhone,IP14-PRO-256GB,iPhone 14 Pro 256GB,1,109900,109900,2025-09-22 09:30:45,UPI,Delivered,Premium,Email Marketing
+ORD005,CUST0004,iPhone,IP15-PRO-128GB,iPhone 15 Pro 128GB,1,119900,119900,2025-09-20 18:20:11,Credit Card,Delivered,Premium,Paid Search
+ORD006,CUST0001,iPhone,IP15-CASE-LEATHER,iPhone 15 Pro Leather Case,3,5999,17997,2025-09-18 12:10:55,Credit Card,Delivered,Premium,Direct
+ORD007,CUST0005,iPhone,IP15-256GB,iPhone 15 256GB,1,89900,89900,2025-09-15 14:22:33,EMI,Delivered,Standard,Affiliate
+ORD008,CUST0002,iPhone,IP15-AIRPODS-PRO,AirPods Pro (2nd Gen),1,24900,24900,2025-09-12 11:45:22,UPI,Delivered,Standard,Social Media
+ORD009,CUST0006,iPhone,IP14-128GB,iPhone 14 128GB,1,69900,69900,2025-09-10 15:30:44,Credit Card,Delivered,Standard,Organic Search
+ORD010,CUST0007,iPhone,IP15-PRO-MAX-1TB,iPhone 15 Pro Max 1TB,1,189900,189900,2025-09-08 13:25:18,Credit Card,Delivered,VIP,Direct
+ORD011,CUST0003,iPhone,IP15-CHARGER-MAGSAFE,MagSafe Charger,2,4500,9000,2025-09-05 10:15:30,UPI,Delivered,Premium,Email Marketing
+ORD012,CUST0008,iPhone,IP13-128GB,iPhone 13 128GB,1,59900,59900,2025-09-03 16:40:25,EMI,Delivered,Budget,Price Comparison
+ORD013,CUST0009,iPhone,IP15-PRO-512GB,iPhone 15 Pro 512GB,1,144900,144900,2025-09-01 09:55:12,Credit Card,Delivered,Premium,Paid Search
+ORD014,CUST0004,iPhone,IP15-SCREEN-PROTECTOR,iPhone 15 Pro Screen Protector,5,1999,9995,2025-08-30 14:20:45,Credit Card,Delivered,Premium,Direct
+ORD015,CUST0010,iPhone,IP14-PRO-MAX-512GB,iPhone 14 Pro Max 512GB,1,139900,139900,2025-08-28 11:30:33,Credit Card,Delivered,Premium,Organic Search
+ORD016,CUST0005,iPhone,IP15-WIRELESS-CHARGER,iPhone Wireless Charger,1,3999,3999,2025-08-25 13:45:22,EMI,Delivered,Standard,Affiliate
+ORD017,CUST0011,iPhone,IP15-PRO-256GB,iPhone 15 Pro 256GB,2,129900,259800,2025-08-22 15:10:11,Credit Card,Delivered,Enterprise,B2B Portal
+ORD018,CUST0001,iPhone,IP15-WALLET-LEATHER,iPhone Leather Wallet,1,5999,5999,2025-08-20 17:25:44,Credit Card,Delivered,Premium,Direct
+ORD019,CUST0012,iPhone,IP15-128GB,iPhone 15 128GB,1,79900,79900,2025-08-18 12:40:33,UPI,Delivered,Standard,Social Media
+ORD020,CUST0013,iPhone,IP14-256GB,iPhone 14 256GB,1,79900,79900,2025-08-15 14:55:22,EMI,Delivered,Standard,Email Marketing
+ORD021,CUST0007,iPhone,IP15-PRO-MAX-CASE,iPhone 15 Pro Max Case,2,4999,9998,2025-08-12 16:15:11,Credit Card,Delivered,VIP,Direct
+ORD022,CUST0014,iPhone,IP13-PRO-256GB,iPhone 13 Pro 256GB,1,94900,94900,2025-08-10 10:30:44,Credit Card,Delivered,Premium,Paid Search
+ORD023,CUST0002,iPhone,IP15-BATTERY-PACK,iPhone Battery Pack,1,8999,8999,2025-08-08 13:20:33,UPI,Delivered,Standard,Social Media
+ORD024,CUST0015,iPhone,IP15-PRO-512GB,iPhone 15 Pro 512GB,1,144900,144900,2025-08-05 09:45:22,Credit Card,Delivered,Premium,Organic Search
+ORD025,CUST0003,iPhone,IP15-CAR-MOUNT,iPhone Car Mount,1,2999,2999,2025-08-03 11:55:11,UPI,Delivered,Premium,Email Marketing
+ORD026,CUST0016,iPhone,IP14-PRO-128GB,iPhone 14 Pro 128GB,1,99900,99900,2025-08-01 14:10:44,EMI,Delivered,Standard,Affiliate
+ORD027,CUST0009,iPhone,IP15-LIGHTNING-CABLE,Lightning Cable 2m,3,2999,8997,2025-07-30 16:25:33,Credit Card,Delivered,Premium,Direct
+ORD028,CUST0017,iPhone,IP15-256GB,iPhone 15 256GB,1,89900,89900,2025-07-28 12:40:22,Credit Card,Delivered,Standard,Paid Search
+ORD029,CUST0004,iPhone,IP15-PRO-CASE-CLEAR,iPhone 15 Pro Clear Case,2,3999,7998,2025-07-25 15:55:11,Credit Card,Delivered,Premium,Direct
+ORD030,CUST0018,iPhone,IP13-PRO-MAX-512GB,iPhone 13 Pro Max 512GB,1,119900,119900,2025-07-23 10:15:44,Credit Card,Delivered,Premium,Organic Search
+ORD031,CUST0010,iPhone,IP15-MAGSAFE-WALLET,MagSafe Wallet,1,5999,5999,2025-07-20 13:30:33,Credit Card,Delivered,Premium,Direct
+ORD032,CUST0019,iPhone,IP14-128GB,iPhone 14 128GB,2,69900,139800,2025-07-18 17:45:22,EMI,Delivered,Budget,Price Comparison
+ORD033,CUST0001,iPhone,IP15-PRO-STAND,iPhone Pro Stand,1,9999,9999,2025-07-15 11:20:11,Credit Card,Delivered,Premium,Direct
+ORD034,CUST0020,iPhone,IP15-PRO-MAX-256GB,iPhone 15 Pro Max 256GB,1,149900,149900,2025-07-12 14:35:44,Credit Card,Delivered,VIP,Paid Search
+ORD035,CUST0005,iPhone,IP15-POWER-ADAPTER,iPhone Power Adapter,2,1999,3998,2025-07-10 16:50:33,EMI,Delivered,Standard,Affiliate
+ORD036,CUST0021,iPhone,IP14-PRO-MAX-256GB,iPhone 14 Pro Max 256GB,1,129900,129900,2025-07-08 09:15:22,Credit Card,Delivered,Premium,Email Marketing
+ORD037,CUST0011,iPhone,IP15-GAMING-CONTROLLER,iPhone Gaming Controller,1,6999,6999,2025-07-05 12:30:11,Credit Card,Delivered,Enterprise,B2B Portal
+ORD038,CUST0022,iPhone,IP15-128GB,iPhone 15 128GB,1,79900,79900,2025-07-03 15:45:44,UPI,Delivered,Standard,Social Media
+ORD039,CUST0002,iPhone,IP15-TRIPOD,iPhone Tripod,1,4999,4999,2025-07-01 18:20:33,UPI,Delivered,Standard,Social Media
+ORD040,CUST0023,iPhone,IP13-256GB,iPhone 13 256GB,1,69900,69900,2025-06-28 13:35:22,EMI,Delivered,Budget,Price Comparison
+ORD041,CUST0007,iPhone,IP15-PRO-MAX-STAND,iPhone Pro Max Stand,1,11999,11999,2025-06-25 10:50:11,Credit Card,Delivered,VIP,Direct
+ORD042,CUST0024,iPhone,IP14-PRO-512GB,iPhone 14 Pro 512GB,1,124900,124900,2025-06-23 14:15:44,Credit Card,Delivered,Premium,Organic Search
+ORD043,CUST0003,iPhone,IP15-MEMORY-CARD,iPhone Memory Card 256GB,1,7999,7999,2025-06-20 16:30:33,UPI,Delivered,Premium,Email Marketing
+ORD044,CUST0025,iPhone,IP15-PRO-128GB,iPhone 15 Pro 128GB,1,119900,119900,2025-06-18 11:45:22,Credit Card,Delivered,Standard,Paid Search
+ORD045,CUST0009,iPhone,IP15-BLUETOOTH-SPEAKER,iPhone Bluetooth Speaker,1,8999,8999,2025-06-15 13:20:11,Credit Card,Delivered,Premium,Direct
+ORD046,CUST0026,iPhone,IP14-256GB,iPhone 14 256GB,1,79900,79900,2025-06-12 15:35:44,EMI,Delivered,Standard,Affiliate
+ORD047,CUST0004,iPhone,IP15-PRO-CAMERA-KIT,iPhone Pro Camera Kit,1,15999,15999,2025-06-10 17:50:33,Credit Card,Delivered,Premium,Direct
+ORD048,CUST0027,iPhone,IP13-PRO-128GB,iPhone 13 Pro 128GB,1,89900,89900,2025-06-08 12:15:22,Credit Card,Delivered,Standard,Email Marketing
+ORD049,CUST0001,iPhone,IP15-PRO-MAX-GRIP,iPhone Pro Max Grip,2,3499,6998,2025-06-05 14:30:11,Credit Card,Delivered,Premium,Direct
+ORD050,CUST0028,iPhone,IP15-256GB,iPhone 15 256GB,2,89900,179800,2025-06-03 16:45:44,Credit Card,Delivered,Enterprise,B2B Portal
